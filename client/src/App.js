@@ -6,6 +6,7 @@ import "./App.css";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import Alert from "./components/Alert";
+import PresentRegistration from './components/PresentRegistration';
 import axios from "axios";
 
 function App() {
@@ -23,6 +24,8 @@ function App() {
     phone: "",
   });
   const [alert, setAlert] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+
 
   const {
     firstName,
@@ -36,6 +39,7 @@ function App() {
 
     npiNumber,
   } = formData;
+  const handleShowForm = () => setShowForm(!showForm);
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     console.log({ formData });
@@ -71,7 +75,9 @@ function App() {
           npiNumber: "",
           phone: "",
         });
+
       }
+      setShowForm(false);
     } catch (err) {
       const errors = err.response.data.errors;
       if (errors) {
@@ -86,7 +92,9 @@ function App() {
       <Alert error={alert} />
 
       <Container className="pt-3">
-        <Row className="justify-content-center m-2">
+      { !showForm ? <PresentRegistration handleShowForm={handleShowForm} /> : <>
+        
+        <Row className="justify-content-center m-3 p-3">
           <h1>Registration Form</h1>
         </Row>
 
@@ -251,6 +259,8 @@ function App() {
             Submit
           </Button>
         </Form>
+        </>
+      }
       </Container>
     </div>
   );
